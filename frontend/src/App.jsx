@@ -10,7 +10,7 @@ const App = () => {
     <div>
       <Navbar />
 
-    <div className='mt-[60px]'>
+    <div className='mt-[60px] px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 '>
     <Routes>
       <Route path='login' element={<LoginPage />} />
       <Route path='/student' element={<StudentLayout />}  >
