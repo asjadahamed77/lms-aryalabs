@@ -44,18 +44,41 @@ const facultyDepartments = {
 };
 
 const AddStudent = () => {
-  const [selectedFaculty, setSelectedFaculty] = useState("");
+  const [data, setData] = useState({
+    name: "",
+    regNo: "",
+    email: "",
+    password: "",
+    faculty: "",
+    department: "",
+  });
+
   const [departments, setDepartments] = useState([]);
 
-  const handleFacultyChange = (e) => {
-    const selected = e.target.value;
-    setSelectedFaculty(selected);
-    setDepartments(facultyDepartments[selected] || []);
+  // Handle all input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // If faculty changes, also update departments list and clear department
+    if (name === "faculty") {
+      setDepartments(facultyDepartments[value] || []);
+      setData((prev) => ({
+        ...prev,
+        [name]: value,
+        department: "", // reset department
+      }));
+    } else {
+      setData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-   
+    console.log("Submitted data:", data);
+    // Add submit logic here
   };
 
   return (
@@ -68,6 +91,9 @@ const AddStudent = () => {
             <label>Student Name</label>
             <input
               type="text"
+              name="name"
+              value={data.name}
+              onChange={handleChange}
               className="w-full p-2 border border-slate-200 bg-slate-50 rounded"
               required
             />
@@ -76,6 +102,9 @@ const AddStudent = () => {
             <label>Registration Number</label>
             <input
               type="text"
+              name="regNo"
+              value={data.regNo}
+              onChange={handleChange}
               className="w-full p-2 border border-slate-200 bg-slate-50 rounded"
               required
             />
@@ -88,6 +117,9 @@ const AddStudent = () => {
             <label>Add Email</label>
             <input
               type="email"
+              name="email"
+              value={data.email}
+              onChange={handleChange}
               className="w-full p-2 border border-slate-200 bg-slate-50 rounded"
               required
             />
@@ -96,6 +128,9 @@ const AddStudent = () => {
             <label>Add Password</label>
             <input
               type="password"
+              name="password"
+              value={data.password}
+              onChange={handleChange}
               className="w-full p-2 border border-slate-200 bg-slate-50 rounded"
               required
             />
@@ -106,41 +141,48 @@ const AddStudent = () => {
         <div>
           <label>Select Faculty</label>
           <select
+            name="faculty"
+            value={data.faculty}
+            onChange={handleChange}
             className="w-full p-2 border border-slate-200 bg-slate-50 rounded mt-2"
-            value={selectedFaculty}
-            onChange={handleFacultyChange}
             required
           >
             <option value="">--SELECT--</option>
-            <option value="fac_computing">Faculty of Computing</option>
-            <option value="fac_appliedsciences">Faculty of Applied Sciences</option>
-            <option value="fac_medicine">Faculty of Medicine</option>
-            <option value="fac_engineering">Faculty of Engineering</option>
-            <option value="fac_management">Faculty of Management</option>
-            <option value="fac_arts">Faculty of Arts</option>
-            <option value="fac_socialsciences">Faculty of Social Sciences</option>
-            <option value="fac_law">Faculty of Law</option>
+            {Object.keys(facultyDepartments).map((facKey) => (
+              <option key={facKey} value={facKey}>
+                {facKey.replace("fac_", "").replace(/^\w/, (c) => c.toUpperCase()).replace(/_/g, " ")}
+              </option>
+            ))}
           </select>
         </div>
 
-        {/* Department Select - Show only if faculty is selected */}
-        {selectedFaculty && (
+        {/* Department Select */}
+        {data.faculty && (
           <div>
             <label>Select Department</label>
             <select
+              name="department"
+              value={data.department}
+              onChange={handleChange}
               className="w-full p-2 border border-slate-200 bg-slate-50 rounded mt-2"
               required
             >
               <option value="">--SELECT DEPARTMENT--</option>
-              {departments.map((dept, index) => (
-                <option key={index} value={dept}>
+              {departments.map((dept, idx) => (
+                <option key={idx} value={dept}>
                   {dept}
                 </option>
               ))}
             </select>
           </div>
         )}
-        <button type="submit" className="mt-4 p-3 rounded bg-primaryColor text-white hover:bg-primaryColor/70 duration-300 transition-all ease-in-out">Add Student</button>
+
+        <button
+          type="submit"
+          className="mt-4 p-3 rounded bg-primaryColor text-white hover:bg-primaryColor/70 duration-300 transition-all ease-in-out"
+        >
+          Add Student
+        </button>
       </form>
     </div>
   );
