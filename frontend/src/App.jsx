@@ -8,6 +8,11 @@ import AdminLayout from "./layout/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
 import LecturerLayout from "./layout/LecturerLayout";
 import LecturerDashboard from "./pages/LecturerDashboard";
+import StudentManagement from "./components/admin/studentManagement/StudentManagement";
+import LecturerManagement from "./components/admin/lecturerManagement/LecturerManagement";
+import PaymentManagement from "./components/admin/paymentManagement/PaymentManagement";
+import AnnouncementManagement from "./components/admin/announcementManagement/AnnouncementManagement";
+import CourseManagement from "./components/admin/courseManagement/CourseManagement";
 
 const App = () => {
   return (
@@ -22,6 +27,11 @@ const App = () => {
           </Route>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
+            <Route path="student-management" element={<StudentManagement />} />
+            <Route path="lecturer-management" element={<LecturerManagement />} />
+            <Route path="payment-management" element={<PaymentManagement />} />
+            <Route path="announcement-management" element={<AnnouncementManagement />} />
+            <Route path="course-management" element={<CourseManagement />} />
           </Route>
           <Route path="/lecturer" element={<LecturerLayout />}>
             <Route index element={<LecturerDashboard />} />
