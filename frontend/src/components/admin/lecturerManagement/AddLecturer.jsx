@@ -43,10 +43,10 @@ const facultyDepartments = {
   ],
 };
 
-const AddStudent = () => {
+const AddLecturer = () => {
   const [data, setData] = useState({
     name: "",
-    regNo: "",
+   
     email: "",
     password: "",
     faculty: "",
@@ -84,12 +84,12 @@ const AddStudent = () => {
 
   return (
     <div className="py-12">
-      <h1 className="text-2xl font-semibold">Add Student</h1>
+      <h1 className="text-2xl font-semibold">Add Lecturer</h1>
       <form onSubmit={submitHandler} className="flex flex-col gap-4 mt-4">
         {/* Name & Reg No */}
         <div className="flex flex-col gap-4 sm:flex-row">
           <div className="w-full flex flex-col gap-2">
-            <label>Student Name</label>
+            <label>Lecturer Name</label>
             <input
               type="text"
               name="name"
@@ -99,17 +99,7 @@ const AddStudent = () => {
               required
             />
           </div>
-          <div className="w-full flex flex-col gap-2">
-            <label>Registration Number</label>
-            <input
-              type="text"
-              name="regNo"
-              value={data.regNo}
-              onChange={handleChange}
-              className="w-full p-2 border border-slate-200 bg-slate-50 rounded"
-              required
-            />
-          </div>
+         
         </div>
 
         {/* Email & Password */}
@@ -186,11 +176,11 @@ const AddStudent = () => {
           type="submit"
           className="mt-4 p-3 rounded bg-primaryColor text-white hover:bg-primaryColor/70 duration-300 transition-all ease-in-out"
         >
-          Add Student
+          Add Lecturer
         </button>
       </form>
     </div>
   );
 };
 
-export default AddStudent;
+export default AddLecturer;

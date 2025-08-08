@@ -1,9 +1,27 @@
 import React from 'react'
+import { IoPersonAdd } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
+import { FaUserGroup } from "react-icons/fa6";
+
+
 
 const LecturerManagement = () => {
+  const navigate = useNavigate()
+
   return (
-    <div>
-      LecturerManagement
+    <div className="py-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 space-y-4  sm:gap-8">
+      <div onClick={()=>{ navigate('/admin/lecturer-management/add-lecturer'); window.scrollTo(0,0)}} className="flex items-center gap-4 p-4 md:p-8 bg-[#D92C54] text-white rounded-2xl cursor-pointer hover:-translate-y-2 duration-300 transform transition-all ease-linear">
+        <p>
+          <IoPersonAdd className="text-6xl " />
+        </p>
+        <h1 className="text-2xl">Add Lecturer</h1>
+      </div>
+      <div onClick={()=>{ navigate('/admin/lecturer-management/view-lecturers'); window.scrollTo(0,0)}} className="flex items-center gap-4 p-4 md:p-8 bg-[#2F5249] text-white rounded-2xl cursor-pointer hover:-translate-y-2 duration-300 transform transition-all ease-linear">
+        <p>
+          <FaUserGroup className="text-6xl " />
+        </p>
+        <h1 className="text-2xl">View Lecturers</h1>
+      </div>
     </div>
   )
 }
