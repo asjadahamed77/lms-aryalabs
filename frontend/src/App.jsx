@@ -17,6 +17,8 @@ import AddStudent from "./components/admin/studentManagement/AddStudent";
 import ViewStudents from "./components/admin/studentManagement/ViewStudents";
 import AddLecturer from "./components/admin/lecturerManagement/AddLecturer";
 import ViewLecturers from "./components/admin/lecturerManagement/ViewLecturers";
+import AddCourse from "./components/admin/courseManagement/AddCourse";
+import ViewCourses from "./components/admin/courseManagement/ViewCourses";
 
 const App = () => {
   return (
@@ -40,6 +42,8 @@ const App = () => {
             <Route path="payment-management" element={<PaymentManagement />} />
             <Route path="announcement-management" element={<AnnouncementManagement />} />
             <Route path="course-management" element={<CourseManagement />} />
+            <Route path="course-management/add-course" element={<AddCourse />} />
+            <Route path="course-management/view-courses" element={<ViewCourses />} />
           </Route>
           <Route path="/lecturer" element={<LecturerLayout />}>
             <Route index element={<LecturerDashboard />} />
