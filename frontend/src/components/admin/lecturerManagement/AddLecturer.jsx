@@ -174,7 +174,7 @@ const AddLecturer = () => {
 
         <button
           type="submit"
-          className="mt-4 p-3 rounded bg-primaryColor text-white hover:bg-primaryColor/70 duration-300 transition-all ease-in-out"
+          className="cursor-pointer mt-4 p-3 rounded bg-primaryColor text-white hover:bg-primaryColor/70 duration-300 transition-all ease-in-out"
         >
           Add Lecturer
         </button>
