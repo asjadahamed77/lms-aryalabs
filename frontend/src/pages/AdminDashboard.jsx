@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const AdminDashboard = () => {
     const navigate = useNavigate()
   return (
-    <div className="py-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 space-y-4  sm:gap-8">
+    <div className="py-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 space-y-4  sm:gap-8">
       <div onClick={()=>{ navigate('/admin/student-management'); window.scrollTo(0,0)}} className="flex items-center gap-4 p-4 md:p-8 bg-[#D92C54] text-white rounded-2xl cursor-pointer hover:-translate-y-2 duration-300 transform transition-all ease-linear">
         <p>
           <PiStudentBold className="text-6xl " />

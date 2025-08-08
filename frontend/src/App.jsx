@@ -13,6 +13,8 @@ import LecturerManagement from "./components/admin/lecturerManagement/LecturerMa
 import PaymentManagement from "./components/admin/paymentManagement/PaymentManagement";
 import AnnouncementManagement from "./components/admin/announcementManagement/AnnouncementManagement";
 import CourseManagement from "./components/admin/courseManagement/CourseManagement";
+import AddStudent from "./components/admin/studentManagement/AddStudent";
+import ViewStudents from "./components/admin/studentManagement/ViewStudents";
 
 const App = () => {
   return (
@@ -28,6 +30,8 @@ const App = () => {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="student-management" element={<StudentManagement />} />
+            <Route path="student-management/add-student" element={<AddStudent />} />
+            <Route path="student-management/view-students" element={<ViewStudents />} />
             <Route path="lecturer-management" element={<LecturerManagement />} />
             <Route path="payment-management" element={<PaymentManagement />} />
             <Route path="announcement-management" element={<AnnouncementManagement />} />
