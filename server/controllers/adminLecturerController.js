@@ -6,7 +6,12 @@ export const createLecturer = async (req, res) => {
     if( !name || !email || !password || !faculty || !department) {
         return res.status(400).json({message: 'All fields are required'});
     }
-    console.log('📩 Incoming request to create-lecturer:', req.body);
+    // Check if lecturer already exists
+    const existingLecturer = await User.findOne({ where: { email, role: 'lecturer' } });
+    if (existingLecturer) {
+        return res.status(400).json({ success: false, message: 'Lecturer already exists' });
+    }
+    
     try {
         const newLecturer = await User.create({
             name,
@@ -26,3 +31,15 @@ export const createLecturer = async (req, res) => {
         console.log(`Error creating lecturer: ${error.message}`);       
     }
 }
+
+export const getAllLecturers = async (req, res) => {
+    try {
+     
+      const lecturers = await User.findAll({ where: { role: "lecturer" } });
+  
+      return res.status(200).json({ success: true, lecturers });
+    } catch (error) {
+      console.log(`Error fetching lecturers: ${error.message}`);
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  };

@@ -1,11 +1,13 @@
 import React, { createContext, useEffect, useState } from 'react';
 import  { batches, facultiesOfUni, students } from '../assets/assets'
+import { getAllLecturers } from '../service/adminLecturer';
 
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
 
   const [faculties, setFaculties] = useState([])
+  const [lecturers, setLecturers] = useState([])
 
   useEffect(()=>{
     setFaculties(facultiesOfUni)
@@ -32,6 +34,23 @@ const AppContextProvider = ({ children }) => {
     setUser(null);
   };
 
+  const fetchLecturers = async ()=>{
+    try {
+      const data = await getAllLecturers();
+      if (data) {
+        setLecturers(data.lecturers);
+        
+      }
+    } catch (error) {
+      console.error("Error fetching lecturers:", error);
+    }
+  }
+  
+
+  useEffect(()=>{
+    fetchLecturers()
+  },[])
+
 
   
     
@@ -44,6 +63,8 @@ const AppContextProvider = ({ children }) => {
     setUser,
     login,
     logout,
+    lecturers,
+    setLecturers
   };
 
   return (
