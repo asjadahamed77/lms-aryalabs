@@ -49,7 +49,7 @@ const App = () => {
             <Route path="course-management/add-course" element={<AddCourse />} />
             <Route path="course-management/view-courses" element={<ViewCourses />} />
           </Route>
-          <Route path="/lecturer" element={<LecturerLayout />}>
+          <Route path="/lecturer/:id" element={<LecturerLayout />}>
             <Route index element={<LecturerDashboard />} />
           </Route>
           <Route path="*" element={<div>404 Not Found</div>} />

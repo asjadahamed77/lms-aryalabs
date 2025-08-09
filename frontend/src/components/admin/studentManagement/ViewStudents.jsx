@@ -8,7 +8,7 @@ const ViewStudents = () => {
   const [selectedDepartment, setSelectedDepartment] = useState('')
   const [selectedBatch, setSelectedBatch] = useState('')
 
-  // Get unique departments for the selected faculty
+ 
   const facultyDepartments = selectedFaculty  
     ? [...new Set(
         students
@@ -17,14 +17,14 @@ const ViewStudents = () => {
       )]
     : []
 
-  // Get unique batches for the selected faculty
+
   const facultyBatches = selectedFaculty
     ? [...new Set(
         students
           .filter(student => student.faculty === selectedFaculty.name)
           .map(student => student.batch)
       )]
-    : batches.map(batch => batch.name) // Fallback to all batches if no faculty selected
+    : batches.map(batch => batch.name) 
 
   // Filter students based on selections
   const filteredStudents = students.filter(student => {
