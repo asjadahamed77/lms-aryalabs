@@ -4,6 +4,7 @@ import "dotenv/config";
 import cookieParser from 'cookie-parser';
 import db from './config/db.js';
 import adminLecturerRouter from './routes/adminLecturerRoutes.js';
+import authRouter from './routes/authRoutes.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -27,6 +28,7 @@ app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 // Routes
 app.use('/api/admin/lecturer', adminLecturerRouter);
+app.use('/api/auth',authRouter );
 
 
 app.get('/', (req, res) => {

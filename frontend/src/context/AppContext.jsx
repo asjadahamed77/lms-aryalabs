@@ -11,6 +11,27 @@ const AppContextProvider = ({ children }) => {
     setFaculties(facultiesOfUni)
   },[])
 
+  const [user, setUser] = useState(null);
+  
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const login = (userData, token) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('token', token);
+    setUser(userData);
+  };
+
+  const logout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
 
   
     
@@ -18,7 +39,11 @@ const AppContextProvider = ({ children }) => {
     faculties,
     setFaculties,
     students,
-    batches
+    batches,
+    user,
+    setUser,
+    login,
+    logout,
   };
 
   return (

@@ -80,6 +80,7 @@ const AddLecturer = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     
+    
     try {
       await createLecturer(data);
       setData({
