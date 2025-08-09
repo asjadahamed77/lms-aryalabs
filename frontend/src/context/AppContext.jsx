@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import  { facultiesOfUni } from '../assets/assets'
+import  { facultiesOfUni, students } from '../assets/assets'
 
 export const AppContext = createContext();
 
@@ -11,12 +11,13 @@ const AppContextProvider = ({ children }) => {
     setFaculties(facultiesOfUni)
   },[])
 
-  console.log(faculties);
+
   
     
   const value = {
     faculties,
-    setFaculties
+    setFaculties,
+    students
   };
 
   return (

@@ -25,7 +25,7 @@ const AddStudent = () => {
       setData((prev) => ({
         ...prev,
         [name]: value,
-        department: "", // Reset department when faculty changes
+        department: "", 
       }));
     } else {
       setData((prev) => ({
@@ -39,7 +39,7 @@ const AddStudent = () => {
     e.preventDefault();
 
     try {
-      alert("✅ Student added successfully!");
+      alert("Student added successfully!");
 
       // Reset form after submit
       setData({
@@ -54,7 +54,7 @@ const AddStudent = () => {
       setDepartments([]);
     } catch (err) {
       console.error(err);
-      alert("❌ Failed to add student");
+      alert("Failed to add student");
     }
   };
 
