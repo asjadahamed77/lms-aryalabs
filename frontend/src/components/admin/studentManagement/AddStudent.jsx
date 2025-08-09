@@ -1,49 +1,9 @@
-import React, { useState } from "react";
-
-const facultyDepartments = {
-  fac_computing: [
-    "Department of Software Engineering",
-    "Department of Computer Science",
-    "Department of Information Systems",
-  ],
-  fac_appliedsciences: [
-    "Department of Physics",
-    "Department of Chemistry",
-    "Department of Biology",
-  ],
-  fac_medicine: [
-    "Department of Clinical Medicine",
-    "Department of Physiology",
-    "Department of Pathology",
-  ],
-  fac_engineering: [
-    "Department of Civil Engineering",
-    "Department of Electrical Engineering",
-    "Department of Mechanical Engineering",
-  ],
-  fac_management: [
-    "Department of Marketing",
-    "Department of Finance",
-    "Department of HR Management",
-  ],
-  fac_arts: [
-    "Department of Languages",
-    "Department of History",
-    "Department of Philosophy",
-  ],
-  fac_socialsciences: [
-    "Department of Sociology",
-    "Department of Psychology",
-    "Department of Political Science",
-  ],
-  fac_law: [
-    "Department of Criminal Law",
-    "Department of Constitutional Law",
-    "Department of International Law",
-  ],
-};
+import React, { useContext, useState } from "react";
+import { AppContext } from "../../../context/AppContext";
 
 const AddStudent = () => {
+  const { faculties } = useContext(AppContext);
+
   const [data, setData] = useState({
     name: "",
     regNo: "",
@@ -51,21 +11,21 @@ const AddStudent = () => {
     password: "",
     faculty: "",
     department: "",
+    createdAt: new Date().toISOString().slice(0, 19).replace("T", " "),
   });
 
   const [departments, setDepartments] = useState([]);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-
     if (name === "faculty") {
-      setDepartments(facultyDepartments[value] || []);
+      const selectedFaculty = faculties.find((f) => f.value === value);
+      setDepartments(selectedFaculty ? selectedFaculty.departments : []);
       setData((prev) => ({
         ...prev,
         [name]: value,
-        department: "", 
+        department: "", // Reset department when faculty changes
       }));
     } else {
       setData((prev) => ({
@@ -75,11 +35,27 @@ const AddStudent = () => {
     }
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    
-    
- 
+
+    try {
+      alert("✅ Student added successfully!");
+
+      // Reset form after submit
+      setData({
+        name: "",
+        regNo: "",
+        email: "",
+        password: "",
+        faculty: "",
+        department: "",
+        createdAt: new Date().toISOString().slice(0, 19).replace("T", " "),
+      });
+      setDepartments([]);
+    } catch (err) {
+      console.error(err);
+      alert("❌ Failed to add student");
+    }
   };
 
   return (
@@ -149,19 +125,15 @@ const AddStudent = () => {
             required
           >
             <option value="">--SELECT--</option>
-            <option value="fac_computing">Faculty of Computing</option>
-            <option value="fac_appliedsciences">Faculty of Applied Sciences</option>
-            <option value="fac_medicine">Faculty of Medicine</option>
-            <option value="fac_engineering">Faculty of Engineering</option>
-            <option value="fac_management">Faculty of Management</option>
-            <option value="fac_arts">Faculty of Arts</option>
-            <option value="fac_socialsciences">Faculty of Social Sciences</option>
-            <option value="fac_law">Faculty of Law</option>
-
+            {faculties.map((faculty, index) => (
+              <option key={index} value={faculty.value}>
+                {faculty.name}
+              </option>
+            ))}
           </select>
         </div>
 
-        {/* Department Select */}
+        {/* Department Select - Only shown when a faculty is selected */}
         {data.faculty && (
           <div>
             <label>Select Department</label>
@@ -173,9 +145,9 @@ const AddStudent = () => {
               required
             >
               <option value="">--SELECT DEPARTMENT--</option>
-              {departments.map((dept, idx) => (
-                <option key={idx} value={dept}>
-                  {dept}
+              {departments.map((dept, index) => (
+                <option key={index} value={dept.department}>
+                  {dept.department}
                 </option>
               ))}
             </select>

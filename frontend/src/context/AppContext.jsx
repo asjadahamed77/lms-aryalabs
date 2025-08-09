@@ -1,11 +1,23 @@
-import React, { createContext } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
+import  { facultiesOfUni } from '../assets/assets'
 
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
 
+  const [faculties, setFaculties] = useState([])
+
+  useEffect(()=>{
+    setFaculties(facultiesOfUni)
+  },[])
+
+  console.log(faculties);
+  
     
-  const value = {};
+  const value = {
+    faculties,
+    setFaculties
+  };
 
   return (
     <AppContext.Provider value={value}>

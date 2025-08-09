@@ -47,7 +47,7 @@ const AddCourse = () => {
   const [data, setData] = useState({
     courseName: "",
     courseCode: "",
-
+    semester: "",
     faculty: "",
     department: "",
   });
@@ -111,6 +111,27 @@ const AddCourse = () => {
               required
             />
           </div>
+        </div>
+
+        <div>
+        <label>Select Semester</label>
+          <select
+            name="semester"
+            value={data.semester}
+            onChange={handleChange}
+            className="w-full p-2 border border-slate-200 bg-slate-50 rounded mt-2"
+            required
+          >
+            <option value="">--SELECT SEMESTER--</option>
+            <option value="semester_1">Semester 1</option>
+            <option value="semester_2">Semester 2</option>
+            <option value="semester_3">Semester 3</option>
+            <option value="semester_4">Semester 4</option>
+            <option value="semester_5">Semester 5</option>
+            <option value="semester_6">Semester 6</option>
+            <option value="semester_7">Semester 7</option>
+            <option value="semester_8">Semester 8</option>
+          </select>
         </div>
 
         {/* Faculty Select */}
