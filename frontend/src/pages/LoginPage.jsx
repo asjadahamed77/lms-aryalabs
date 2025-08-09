@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { loginUser } from '../service/auth'
 import { useNavigate } from 'react-router-dom'
+import Loading from '../components/common/Loading'
 
 const LoginPage = () => {
 
@@ -10,6 +11,8 @@ const LoginPage = () => {
       email: "",
       password: "",
     })
+
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,6 +25,7 @@ const LoginPage = () => {
     const submitHandler = async (e)=>{
         e.preventDefault()
         try {
+          setLoading(true);
           const user = await loginUser(data);
           setData({ email: "", password: "" });
           
@@ -43,7 +47,13 @@ const LoginPage = () => {
         }  catch (error) {
           console.log("Error logging in:", error);
           
+        }finally{
+          setLoading(false);
         }
+    }
+
+    if(loading) {
+        return <Loading />
     }
 
   return (

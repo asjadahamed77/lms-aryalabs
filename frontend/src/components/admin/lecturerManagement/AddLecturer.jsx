@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 import { createLecturer } from "../../../service/adminLecturer";
+import Loading from "../../common/Loading";
 
 const facultyDepartments = {
   fac_computing: [
@@ -56,6 +56,7 @@ const AddLecturer = () => {
   });
 
   const [departments, setDepartments] = useState([]);
+  const [loading, setLoading] = useState(false);
 
 
   const handleChange = (e) => {
@@ -82,6 +83,7 @@ const AddLecturer = () => {
     
     
     try {
+      setLoading(true);
       await createLecturer(data);
       setData({
         name: "",
@@ -92,10 +94,16 @@ const AddLecturer = () => {
       })
     } catch (error) {
       console.error("Error creating lecturer:", error);
+    }finally{
+      setLoading(false);
     }
     
  
   };
+
+  if(loading){
+    return <Loading />
+  }
 
   return (
     <div className="py-12">
