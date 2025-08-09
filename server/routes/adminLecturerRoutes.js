@@ -2,8 +2,10 @@ import express from 'express';
 import { createLecturer } from '../controllers/adminLecturerController.js';
 
 
-const adminLecturerRouter = express.Router();
+const router = express.Router();
 
-adminLecturerRouter.post('/create-lecturer', createLecturer)
+router.post('/create-lecturer', createLecturer)
 
-export default adminLecturerRouter;
+
+
+export default router;

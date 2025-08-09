@@ -6,6 +6,7 @@ export const createLecturer = async (req, res) => {
     if( !name || !email || !password || !faculty || !department) {
         return res.status(400).json({message: 'All fields are required'});
     }
+    console.log('📩 Incoming request to create-lecturer:', req.body);
     try {
         const newLecturer = await User.create({
             name,
@@ -16,6 +17,8 @@ export const createLecturer = async (req, res) => {
             department,
             isActive: true
         });
+        console.log(`New lecturer created: ${newLecturer.name}`);
+        
         return res.status(201).json({message: 'Lecturer created successfully', lecturer: newLecturer});
         
     } catch (error) {
