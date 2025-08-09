@@ -9,6 +9,7 @@ const AddStudent = () => {
     regNo: "",
     email: "",
     password: "",
+    batch: "",
     faculty: "",
     department: "",
     createdAt: new Date().toISOString().slice(0, 19).replace("T", " "),
@@ -47,6 +48,7 @@ const AddStudent = () => {
         regNo: "",
         email: "",
         password: "",
+        batch: "",
         faculty: "",
         department: "",
         createdAt: new Date().toISOString().slice(0, 19).replace("T", " "),
@@ -112,6 +114,26 @@ const AddStudent = () => {
               required
             />
           </div>
+        </div>
+
+        {/* Batch */}
+        <div>
+        <label>Select Batch</label>
+        <select name="batch" value={data.batch} onChange={handleChange}  className="w-full p-2 border border-slate-200 bg-slate-50 rounded mt-2"
+            required>
+          <option value="">--SELECT BATCH--</option>
+          <option value="2020/2021 Batch">2020/2021 Batch</option>
+          <option value="2021/2022 Batch">2021/2022 Batch</option>
+          <option value="2022/2023 Batch">2022/2023 Batch</option>
+          <option value="2023/2024 Batch">2023/2024 Batch</option>
+          <option value="2024/2025 Batch">2024/2025 Batch</option>
+          <option value="2025/2026 Batch">2025/2026 Batch</option>
+          <option value="2026/2027 Batch">2026/2027 Batch</option>
+          <option value="2027/2028 Batch">2027/2028 Batch</option>
+          <option value="2028/2029 Batch">2028/2029 Batch</option>
+          <option value="2029/2030 Batch">2029/2030 Batch</option>
+          <option value="2030/2031 Batch">2030/2031 Batch</option>
+            </select>
         </div>
 
         {/* Faculty Select */}

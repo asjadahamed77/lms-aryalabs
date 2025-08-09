@@ -2,13 +2,14 @@ import React, { useContext, useState } from 'react'
 import { AppContext } from '../../../context/AppContext'
 
 const ViewStudents = () => {
-  const { students, faculties } = useContext(AppContext)
+  const { students, faculties, batches } = useContext(AppContext)
   const [selectedFaculty, setSelectedFaculty] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState('')
+  const [selectedBatch, setSelectedBatch] = useState('')
 
   // Get unique departments for the selected faculty
-  const facultyDepartments = selectedFaculty 
+  const facultyDepartments = selectedFaculty  
     ? [...new Set(
         students
           .filter(student => student.faculty === selectedFaculty.name)
@@ -16,18 +17,29 @@ const ViewStudents = () => {
       )]
     : []
 
+  // Get unique batches for the selected faculty
+  const facultyBatches = selectedFaculty
+    ? [...new Set(
+        students
+          .filter(student => student.faculty === selectedFaculty.name)
+          .map(student => student.batch)
+      )]
+    : batches.map(batch => batch.name) // Fallback to all batches if no faculty selected
+
   // Filter students based on selections
   const filteredStudents = students.filter(student => {
     const matchesFaculty = !selectedFaculty || student.faculty === selectedFaculty.name
     const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesDepartment = !selectedDepartment || student.department === selectedDepartment
+    const matchesBatch = !selectedBatch || student.batch === selectedBatch
     
-    return matchesFaculty && matchesSearch && matchesDepartment
+    return matchesFaculty && matchesSearch && matchesDepartment && matchesBatch
   })
 
   const handleFacultySelect = (faculty) => {
     setSelectedFaculty(faculty)
-    setSelectedDepartment('') // Reset department filter when faculty changes
+    setSelectedDepartment('')
+    setSelectedBatch('')
   }
 
   return (
@@ -59,6 +71,7 @@ const ViewStudents = () => {
                 setSelectedFaculty(null)
                 setSearchTerm('')
                 setSelectedDepartment('')
+                setSelectedBatch('')
               }}
               className='px-4 py-2 bg-primaryColor/70 text-white rounded-lg hover:bg-primaryColor/80 transition-colors'
             >
@@ -100,6 +113,24 @@ const ViewStudents = () => {
                 </select>
               </div>
             )}
+
+            {facultyBatches.length > 0 && (
+              <div className='flex-1'>
+                <label className='block text-sm font-medium text-primaryColor/70 mb-1'>Filter by Batch</label>
+                <select
+                  value={selectedBatch}
+                  onChange={(e) => setSelectedBatch(e.target.value)}
+                  className='w-full p-2 border border-gray-300 rounded-md focus:ring-primaryColor focus:border-primaryColor'
+                >
+                  <option value=''>All Batches</option>
+                  {facultyBatches.map((batch, index) => (
+                    <option key={index} value={batch}>
+                      {batch}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
 
           {/* Students table */}
@@ -113,6 +144,7 @@ const ViewStudents = () => {
                       <th className='py-2 px-4 border-b text-start'>Reg No</th>
                       <th className='py-2 px-4 border-b text-start'>Email</th>
                       <th className='py-2 px-4 border-b text-start'>Department</th>
+                      <th className='py-2 px-4 border-b text-start'>Batch</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -122,6 +154,7 @@ const ViewStudents = () => {
                         <td className='py-2 px-4 border-b'>{student.regNo}</td>
                         <td className='py-2 px-4 border-b'>{student.email}</td>
                         <td className='py-2 px-4 border-b'>{student.department}</td>
+                        <td className='py-2 px-4 border-b'>{student.batch}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -129,7 +162,7 @@ const ViewStudents = () => {
               </div>
             ) : (
               <p className='text-gray-500 py-4 text-center'>
-                {searchTerm || selectedDepartment
+                {searchTerm || selectedDepartment || selectedBatch
                   ? 'No students match your search criteria'
                   : `No students found in ${selectedFaculty.name}`}
               </p>
