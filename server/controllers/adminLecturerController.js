@@ -17,11 +17,12 @@ export const createLecturer = async (req, res) => {
             department,
             isActive: true
         });
-        console.log(`New lecturer created: ${newLecturer.name}`);
+     
         
-        return res.status(201).json({message: 'Lecturer created successfully', lecturer: newLecturer});
+        return res.status(201).json({ success:true ,message: 'Lecturer created successfully', lecturer: newLecturer});
         
     } catch (error) {
+        res.json({ success:false, message: error.message });
         console.log(`Error creating lecturer: ${error.message}`);       
     }
 }

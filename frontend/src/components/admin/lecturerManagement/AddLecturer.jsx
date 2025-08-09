@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { createLecturer } from "../../../service/adminLecturer";
 
 const facultyDepartments = {
   fac_computing: [
@@ -75,9 +77,21 @@ const AddLecturer = () => {
     }
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     
+    try {
+      await createLecturer(data);
+      setData({
+        name: "",
+        email: "",
+        password: "",
+        faculty: "",
+        department: "",
+      })
+    } catch (error) {
+      console.error("Error creating lecturer:", error);
+    }
     
  
   };

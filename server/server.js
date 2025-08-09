@@ -26,7 +26,7 @@ app.use(cors({ origin: allowedOrigins, credentials: true }));
 })();
 
 // Routes
-app.use('/api/admin', adminLecturerRouter);
+app.use('/api/admin/lecturer', adminLecturerRouter);
 
 
 app.get('/', (req, res) => {

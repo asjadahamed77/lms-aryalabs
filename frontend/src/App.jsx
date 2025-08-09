@@ -21,11 +21,13 @@ import AddCourse from "./components/admin/courseManagement/AddCourse";
 import ViewCourses from "./components/admin/courseManagement/ViewCourses";
 import AddAnnouncement from "./components/admin/announcementManagement/AddAnnouncement";
 import ViewAnnouncement from "./components/admin/announcementManagement/ViewAnnouncement";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
     <div>
       <Navbar />
+      <Toaster />
 
       <div className="mt-[60px] px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 ">
         <Routes>
