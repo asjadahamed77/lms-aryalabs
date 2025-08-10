@@ -1,8 +1,11 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../../context/AppContext";
+import { createStudent } from "../../../service/adminStudent";
+import Loading from "../../common/Loading";
+import toast from "react-hot-toast";
 
 const AddStudent = () => {
-  const { faculties } = useContext(AppContext);
+  const { faculties, loading, setLoading } = useContext(AppContext);
 
   const [data, setData] = useState({
     name: "",
@@ -40,7 +43,9 @@ const AddStudent = () => {
     e.preventDefault();
 
     try {
-      alert("Student added successfully!");
+
+      setLoading(true);
+      await createStudent(data);
 
       // Reset form after submit
       setData({
@@ -56,9 +61,15 @@ const AddStudent = () => {
       setDepartments([]);
     } catch (err) {
       console.error(err);
-      alert("Failed to add student");
+      toast.error("Error creating student");
+    }finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="py-12">
