@@ -39,7 +39,7 @@ const Navbar = () => {
         location.pathname !== "/login" && (
           <div className="relative group">
         <div className="flex items-center gap-3 cursor-pointer py-3">
-        <p>MJA Ahamed</p>
+        <p className="capitalize">{user?.name}</p>
         <p className="text-lg">
           <FaUser />
         </p>

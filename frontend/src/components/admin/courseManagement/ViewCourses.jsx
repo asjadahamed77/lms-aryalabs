@@ -3,8 +3,9 @@ import { AppContext } from '../../../context/AppContext'
 import Loading from '../../common/Loading'
 
 const ViewCourses = () => {
-  const {loading, courses, faculties} = useContext(AppContext)
-
+  const {loading, courses, faculties, lecturers} = useContext(AppContext)
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFaculty, setSelectedFaculty] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
@@ -19,7 +20,7 @@ const ViewCourses = () => {
     return faculties.flatMap((f) => f.departments);
   }, [selectedFaculty, faculties]);
 
-  // Filter lecturers
+  // Filter courses
   const filteredCourses = courses.filter((course) => {
     const matchesSearch = course.courseName.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFaculty = selectedFaculty ? course.faculty === selectedFaculty : true;
@@ -27,13 +28,29 @@ const ViewCourses = () => {
     return matchesSearch && matchesFaculty && matchesDepartment;
   });
 
+  // Get lecturers for the selected course's faculty
+  const getFacultyLecturers = (courseFaculty) => {
+    return lecturers.filter(lecturer => lecturer.faculty === courseFaculty);
+  };
+
+  const handleAssignClick = (course) => {
+    setSelectedCourse(course);
+    setShowPopup(true);
+  };
+
+  const handleAssignLecturer = () => {
+    
+    setShowPopup(false);
+  };
+
   if(loading){
     return <Loading />
   }
 
   return (
     <div className='py-12'>
-       <div className="flex flex-col gap-4 lg:flex-row mb-8">
+      {/* Search and filter controls */}
+      <div className="flex flex-col gap-4 lg:flex-row mb-8">
         {/* Search */}
         <div className="flex-1">
           <label className="block text-sm font-medium text-primaryColor/70 mb-1">Search by Name</label>
@@ -83,6 +100,7 @@ const ViewCourses = () => {
           </select>
         </div>
       </div>
+
       {/* Course Table */}
       <div>
         {filteredCourses.length > 0 ? (
@@ -94,6 +112,7 @@ const ViewCourses = () => {
                   <th className="py-2 px-4 border-b text-start">Course Code</th>
                   <th className="py-2 px-4 border-b text-start">Faculty</th>
                   <th className="py-2 px-4 border-b text-start">Department</th>
+                  <th className="py-2 px-4 border-b text-start">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -103,6 +122,14 @@ const ViewCourses = () => {
                     <td className="py-2 px-4 border-b">{course.courseCode}</td>
                     <td className="py-2 px-4 border-b">{course.faculty}</td>
                     <td className="py-2 px-4 border-b">{course.department}</td>
+                    <td className="py-2 px-4 border-b">
+                      <button 
+                        onClick={() => handleAssignClick(course)}
+                        className='bg-primaryColor text-sm text-white px-2 py-1 rounded hover:bg-primaryColor/80 duration-300 transition-all ease-linear cursor-pointer'
+                      >
+                        Assign Lecturer
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -114,6 +141,41 @@ const ViewCourses = () => {
           </div>
         )}
       </div>
+
+      {/* Popup Display */}
+      {selectedCourse && (
+        <div className={`fixed inset-0 bg-black/50 flex items-center justify-center ${showPopup ? 'block' : 'hidden'}`}>
+          <div className='bg-white p-6 rounded-lg shadow-lg sm:w-[500px] w-full mx-4 sm:m-0'>
+            <div className='flex items-center justify-between mb-4'>
+              <h2 className='text-xl font-semibold'>Assign Lecturer to {selectedCourse.courseName}</h2>
+              <p 
+                onClick={() => setShowPopup(false)} 
+                className='cursor-pointer font-bold text-lg'
+              >
+                X
+              </p>
+            </div>
+           
+            <div className='flex flex-col w-full gap-2 mt-4'>
+              <label>Select Lecturer from {selectedCourse.faculty}</label>
+              <select className='p-2 border border-slate-200 rounded-md'>
+                <option value="">--Select Lecturer--</option>
+                {getFacultyLecturers(selectedCourse.faculty).map((lecturer, index) => (
+                  <option key={index} value={lecturer.name}>
+                    {lecturer.name} ({lecturer.department})
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button 
+              onClick={handleAssignLecturer}
+              className='mt-6 bg-primaryColor text-sm text-white w-full py-2 rounded hover:bg-primaryColor/80 duration-300 transition-all ease-linear cursor-pointer'
+            >
+              Assign now
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

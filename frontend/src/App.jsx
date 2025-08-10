@@ -23,6 +23,7 @@ import AddAnnouncement from "./components/admin/announcementManagement/AddAnnoun
 import ViewAnnouncement from "./components/admin/announcementManagement/ViewAnnouncement";
 import { Toaster } from "react-hot-toast";
 import { AppContext } from "./context/AppContext";
+import AssignLecturers from "./components/admin/lecturerManagement/AssignLecturers";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -64,6 +65,10 @@ const App = () => {
             <Route
               path="lecturer-management/view-lecturers"
               element={<ViewLecturers />}
+            />
+            <Route
+              path="lecturer-management/assign-lecturers"
+              element={<AssignLecturers />}
             />
             <Route path="payment-management" element={<PaymentManagement />} />
             <Route
