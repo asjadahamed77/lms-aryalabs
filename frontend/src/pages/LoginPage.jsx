@@ -32,7 +32,7 @@ const LoginPage = () => {
           const response = await loginUser(data);
 
        login(response.user, response.token)
-       console.log(response.token);
+   
        
          
         

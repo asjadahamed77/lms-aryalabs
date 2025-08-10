@@ -39,28 +39,10 @@ const App = () => {
               !user ? <LoginPage /> : <Navigate to={`/${user.role}`} replace />
             }
           />{" "}
-          <Route
-            path="/student"
-            element={
-              user && user.role === "student" ? (
-                <StudentLayout />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          >
+          <Route path="/student" element={<StudentLayout />}>
             <Route index element={<StudentDashboard />} />
           </Route>
-          <Route
-            path="/admin"
-            element={
-              user && user.role === "admin" ? (
-                <AdminLayout />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          >
+          <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="student-management" element={<StudentManagement />} />
             <Route
@@ -106,16 +88,7 @@ const App = () => {
               element={<ViewCourses />}
             />
           </Route>
-          <Route
-            path="/lecturer"
-            element={
-              user && user.role === "lecturer" ? (
-                <LecturerLayout />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          >
+          <Route path="/lecturer" element={<LecturerLayout />}>
             <Route index element={<LecturerDashboard />} />
           </Route>
           <Route path="*" element={<div>404 Not Found</div>} />

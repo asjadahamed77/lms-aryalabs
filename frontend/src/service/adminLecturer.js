@@ -1,10 +1,10 @@
 import axios from "axios"
 import toast from "react-hot-toast";
-import { AppContext } from "../context/AppContext";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const token = localStorage.getItem('token')
+
 
 
 
