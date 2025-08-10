@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import  { batches, facultiesOfUni } from '../assets/assets'
 import { getAllLecturers } from '../service/adminLecturer';
 import { getAllStudents } from '../service/adminStudent';
+import { getAllCourses } from '../service/adminCourse';
 
 export const AppContext = createContext();
 
@@ -10,6 +11,7 @@ const AppContextProvider = ({ children }) => {
   const [faculties, setFaculties] = useState([])
   const [lecturers, setLecturers] = useState([])
   const [students, setStudents] = useState([])
+  const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(false)
 
   useEffect(()=>{
@@ -67,10 +69,26 @@ const AppContextProvider = ({ children }) => {
     }
   }
 
+  const fetchCourses = async ()=>{
+    try {
+      setLoading(true)
+      const data = await getAllCourses();
+      if (data) {
+        setCourses(data.courses || []);
+        
+      }
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }finally{
+      setLoading(false)
+    }
+  }
+
 
   useEffect(()=>{
     fetchLecturers()
     fetchStudents()
+    fetchCourses()
   },[])
 
 
@@ -90,6 +108,8 @@ const AppContextProvider = ({ children }) => {
     setLecturers,
     loading,
     setLoading,
+    courses,
+    setCourses,
   };
 
   return (
