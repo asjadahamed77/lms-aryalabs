@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../../context/AppContext";
+import Loading from "../../common/Loading";
 
 const ViewStudents = () => {
-  const { students, faculties, batches } = useContext(AppContext);
+  const { students, faculties, batches, loading } = useContext(AppContext);
   const [selectedFaculty, setSelectedFaculty] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
@@ -39,6 +40,10 @@ const ViewStudents = () => {
     setSelectedDepartment("");
     setSelectedBatch("");
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="py-12">
