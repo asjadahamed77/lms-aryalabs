@@ -82,8 +82,12 @@ const Course = db.define('Course', {
 });
 
 Course.associate = (models) => {
-  Course.belongsTo(models.User, { foreignKey: 'lecturerId', as: 'lecturer' });
+  Course.belongsTo(models.User, {
+    foreignKey: 'lecturerId',
+    as: 'lecturer'
+  });
 };
+
 
 
 

@@ -47,3 +47,20 @@ export const getAllCourses = async()=>{
         
     }
 }
+
+export const assignLecturerToCourse = async ({courseId, lecturerId}) => {
+    try {
+        const {data} = await axios.post('/admin/course/assign',{courseId, lecturerId},{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+
+        return data;
+    } catch (error) {
+        toast.error("Error assigning lecturer to course");
+        console.error("Error assigning lecturer to course:", error);
+        
+    }
+}
