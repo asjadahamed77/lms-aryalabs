@@ -8,6 +8,7 @@ const AppContextProvider = ({ children }) => {
 
   const [faculties, setFaculties] = useState([])
   const [lecturers, setLecturers] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(()=>{
     setFaculties(facultiesOfUni)
@@ -36,13 +37,16 @@ const AppContextProvider = ({ children }) => {
 
   const fetchLecturers = async ()=>{
     try {
+      setLoading(true)
       const data = await getAllLecturers();
       if (data) {
-        setLecturers(data.lecturers);
+        setLecturers(data.lecturers || []);
         
       }
     } catch (error) {
       console.error("Error fetching lecturers:", error);
+    }finally{
+      setLoading(false)
     }
   }
   
@@ -64,7 +68,8 @@ const AppContextProvider = ({ children }) => {
     login,
     logout,
     lecturers,
-    setLecturers
+    setLecturers,
+    loading
   };
 
   return (
