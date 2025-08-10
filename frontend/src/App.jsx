@@ -26,6 +26,9 @@ import { AppContext } from "./context/AppContext";
 
 const App = () => {
   const { user } = useContext(AppContext);
+
+  
+
   return (
     <div>
       <Navbar />
@@ -33,12 +36,9 @@ const App = () => {
 
       <div className="mt-[60px] px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 ">
         <Routes>
-          <Route
-            path="login"
-            element={
-              !user ? <LoginPage /> : <Navigate to={`/${user.role}`} replace />
-            }
-          />{" "}
+          {
+            !user && <Route path="login" element={<LoginPage />} />
+          }
           <Route path="/student" element={<StudentLayout />}>
             <Route index element={<StudentDashboard />} />
           </Route>
