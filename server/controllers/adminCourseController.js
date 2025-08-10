@@ -41,8 +41,13 @@ export const createCourse = async (req, res) => {
 export const getAllCourses = async (req, res) => {
   try {
     const courses = await Course.findAll({
-      attributes: ['id', 'courseName', 'courseCode', 'semester', 'faculty', 'department','lecturerId']
-      
+      attributes: ['id', 'courseName', 'courseCode', 'semester', 'faculty', 'department', 'lecturerId'],
+      include: [{
+        model: User,
+        as: 'lecturer',
+        attributes: ['id', 'name'], // Only include necessary fields
+        required: false // Make it a left join
+      }]
     });
 
     return res.status(200).json({
@@ -58,21 +63,12 @@ export const getAllCourses = async (req, res) => {
     });
   }
 };
-
 export const assignLecturerToCourse = async (req, res) => {
   const { courseId, lecturerId } = req.body;
 
   try {
-    const course = await Course.findByPk(courseId, {
-      include: [{
-        model: User,
-        as: 'lecturer',
-        attributes: ['id', 'name'],
-        where: { role: 'lecturer' },
-        required: false
-      }]
-    });
-    
+    // First verify the course exists
+    const course = await Course.findByPk(courseId);
     if (!course) {
       return res.status(404).json({ 
         success: false, 
@@ -85,26 +81,37 @@ export const assignLecturerToCourse = async (req, res) => {
       where: {
         id: lecturerId,
         role: 'lecturer'
-      }
+      },
+      attributes: ['id', 'name', 'email', 'role'] 
     });
 
     if (!lecturer) {
-      return res.status(404).json({
+      // More detailed error message
+      const userExists = await User.findByPk(lecturerId);
+      
+      if (!userExists) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+      
+      return res.status(400).json({
         success: false,
-        message: 'Lecturer not found or user is not a lecturer'
+        message: 'User exists but is not a lecturer',
+        userRole: userExists.role
       });
     }
 
-    course.lecturerId = lecturerId;
-    await course.save();
+    // Assign lecturer to course
+    await course.update({ lecturerId });
 
-    // Refresh the course data to include the new lecturer
+    // Get updated course with lecturer details
     const updatedCourse = await Course.findByPk(courseId, {
       include: [{
         model: User,
         as: 'lecturer',
-        attributes: ['id', 'name'],
-        where: { role: 'lecturer' },
+        attributes: ['id', 'name', 'email'],
         required: false
       }]
     });
