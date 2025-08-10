@@ -57,3 +57,36 @@ export const getAllCourses = async (req, res) => {
     });
   }
 };
+
+export const assignLecturerToCourse = async (req, res) => {
+  const { courseId, lecturerId } = req.body;
+
+  try {
+    // Find the course
+    const course = await Courss.findByPk(courseId);
+    if (!course) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Course not found' 
+      });
+    }
+
+    // Assign lecturer to the course
+    course.lecturerId = lecturerId;
+    await course.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Lecturer assigned to course successfully',
+      course
+    });
+
+  } catch (error) {
+    console.error('Error assigning lecturer to course:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to assign lecturer to course',
+      error: error.message
+    });
+  }
+}
