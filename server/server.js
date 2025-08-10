@@ -6,6 +6,7 @@ import db from './config/db.js';
 import adminLecturerRouter from './routes/adminLecturerRoutes.js';
 import authRouter from './routes/authRoutes.js';
 import adminStudentRouter from './routes/adminStudentRoutes.js';
+import adminCourseRouter from './routes/adminCourseRoutes.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -30,6 +31,7 @@ app.use(cors({ origin: allowedOrigins, credentials: true }));
 // Routes
 app.use('/api/admin/lecturer', adminLecturerRouter);
 app.use('/api/admin/student', adminStudentRouter);
+app.use('/api/admin/course', adminCourseRouter);
 app.use('/api/auth',authRouter );
 
 
