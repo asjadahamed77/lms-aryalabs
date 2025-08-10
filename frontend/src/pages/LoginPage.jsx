@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { loginUser } from '../service/auth'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../components/common/Loading'
+import { AppContext } from '../context/AppContext'
 
 const LoginPage = () => {
+
+  const {login} = useContext(AppContext)
 
   const navigate = useNavigate()
 
@@ -26,11 +29,16 @@ const LoginPage = () => {
         e.preventDefault()
         try {
           setLoading(true);
-          const user = await loginUser(data);
-          setData({ email: "", password: "" });
+          const response = await loginUser(data);
+
+       login(response.user, response.token)
+   
+       
+         
+        
           
-          if (user) {
-            switch(user.role) {
+          if (response.user) {
+            switch(response.user.role) {
               case "admin":
                 navigate("/admin");
                 break;
@@ -44,6 +52,7 @@ const LoginPage = () => {
                 navigate("/");
             }
           }
+          setData({ email: "", password: "" });
         }  catch (error) {
           console.log("Error logging in:", error);
           

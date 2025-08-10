@@ -6,6 +6,9 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 const token = localStorage.getItem('token')
 
 
+
+
+
 export const createLecturer = async (formData) => {
     try {
         const {data} = await axios.post('/admin/lecturer/create-lecturer', formData, {
@@ -26,3 +29,21 @@ export const createLecturer = async (formData) => {
         console.error("Error creating lecturer:", error);
     }
 } 
+
+export const getAllLecturers = async()=>{
+    try {
+        const {data} = await axios.get('/admin/lecturer/get-all',{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+
+        return data;
+
+    } catch (error) {
+        toast.error("Error in fetching lectures")
+        console.log(error.message);
+        
+    }
+}

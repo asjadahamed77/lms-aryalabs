@@ -203,18 +203,18 @@ export const students = [
 
 export const facultiesOfUni = [
   {
-    value: "fac_computing",
+    value: "Faculty of Computing",
     name: "Faculty of Computing",
     departments: [
       { department: "Department of Software Engineering" },
       { department: "Department of Cybersecurity" },
       { department: "Department of Data Science" },
-      { department: "" },
-      { department: "" },
+      { department: "Department of Computer Science" },
+      { department: "Department of Information Systems" },
     ],
   },
   {
-    value: "fac_appliedsciences",
+    value: "Faculty of Applied Sciences",
     name: "Faculty of Applied Sciences",
     departments: [
       { department: "Department of Chemistry" },
@@ -223,7 +223,7 @@ export const facultiesOfUni = [
     ],
   },
   {
-    value: "fac_medicine",
+    value: "Faculty of Medicine",
     name: "Faculty of Medicine",
     departments: [
       { department: "Department of Pathology" },
@@ -232,7 +232,7 @@ export const facultiesOfUni = [
     ],
   },
   {
-    value: "fac_engineering",
+    value: "Faculty of Engineering",
     name: "Faculty of Engineering",
     departments: [
       { department: "Department of Civil Engineering" },
@@ -241,7 +241,7 @@ export const facultiesOfUni = [
     ],
   },
   {
-    value: "fac_management",
+    value: "Faculty of Management",
     name: "Faculty of Management",
     departments: [
       { department: "Department of Marketing" },
@@ -249,7 +249,7 @@ export const facultiesOfUni = [
     ],
   },
   {
-    value: "fac_arts",
+    value: "Faculty of Arts",
     name: "Faculty of Arts",
     departments: [
       { department: "Department of Linguistics" },
@@ -257,12 +257,12 @@ export const facultiesOfUni = [
     ],
   },
   {
-    value: "fac_socialsciences",
+    value: "Faculty of Social Sciences",
     name: "Faculty of Social Sciences",
     departments: [{ department: "Department of Sociology" }],
   },
   {
-    value: "fac_law",
+    value: "Faculty of Law",
     name: "Faculty of Law",
     departments: [{ department: "Department of Criminal Law" }],
   },

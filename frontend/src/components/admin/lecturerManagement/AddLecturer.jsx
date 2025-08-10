@@ -1,54 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { createLecturer } from "../../../service/adminLecturer";
 import Loading from "../../common/Loading";
-
-const facultyDepartments = {
-  fac_computing: [
-    "Department of Software Engineering",
-    "Department of Computer Science",
-    "Department of Information Systems",
-  ],
-  fac_appliedsciences: [
-    "Department of Physics",
-    "Department of Chemistry",
-    "Department of Biology",
-  ],
-  fac_medicine: [
-    "Department of Clinical Medicine",
-    "Department of Physiology",
-    "Department of Pathology",
-  ],
-  fac_engineering: [
-    "Department of Civil Engineering",
-    "Department of Electrical Engineering",
-    "Department of Mechanical Engineering",
-  ],
-  fac_management: [
-    "Department of Marketing",
-    "Department of Finance",
-    "Department of HR Management",
-  ],
-  fac_arts: [
-    "Department of Languages",
-    "Department of History",
-    "Department of Philosophy",
-  ],
-  fac_socialsciences: [
-    "Department of Sociology",
-    "Department of Psychology",
-    "Department of Political Science",
-  ],
-  fac_law: [
-    "Department of Criminal Law",
-    "Department of Constitutional Law",
-    "Department of International Law",
-  ],
-};
+import { AppContext } from "../../../context/AppContext";
 
 const AddLecturer = () => {
+  const { faculties } = useContext(AppContext);
   const [data, setData] = useState({
     name: "",
-   
     email: "",
     password: "",
     faculty: "",
@@ -58,17 +16,17 @@ const AddLecturer = () => {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(false);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-
     if (name === "faculty") {
-      setDepartments(facultyDepartments[value] || []);
+      // Find the selected faculty object by "value"
+      const selectedFaculty = faculties.find((fac) => fac.value === value);
+      setDepartments(selectedFaculty ? selectedFaculty.departments : []);
       setData((prev) => ({
         ...prev,
         [name]: value,
-        department: "", 
+        department: "", // reset department
       }));
     } else {
       setData((prev) => ({
@@ -80,8 +38,7 @@ const AddLecturer = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    
-    
+
     try {
       setLoading(true);
       await createLecturer(data);
@@ -91,38 +48,34 @@ const AddLecturer = () => {
         password: "",
         faculty: "",
         department: "",
-      })
+      });
+      setDepartments([]);
     } catch (error) {
       console.error("Error creating lecturer:", error);
-    }finally{
+    } finally {
       setLoading(false);
     }
-    
- 
   };
 
-  if(loading){
-    return <Loading />
+  if (loading) {
+    return <Loading />;
   }
 
   return (
     <div className="py-12">
       <h1 className="text-2xl font-semibold">Add Lecturer</h1>
       <form onSubmit={submitHandler} className="flex flex-col gap-4 mt-4">
-        {/* Name & Reg No */}
-        <div className="flex flex-col gap-4 sm:flex-row">
-          <div className="w-full flex flex-col gap-2">
-            <label>Lecturer Name</label>
-            <input
-              type="text"
-              name="name"
-              value={data.name}
-              onChange={handleChange}
-              className="w-full p-2 border border-slate-200 bg-slate-50 rounded"
-              required
-            />
-          </div>
-         
+        {/* Name */}
+        <div className="w-full flex flex-col gap-2">
+          <label>Lecturer Name</label>
+          <input
+            type="text"
+            name="name"
+            value={data.name}
+            onChange={handleChange}
+            className="w-full p-2 border border-slate-200 bg-slate-50 rounded"
+            required
+          />
         </div>
 
         {/* Email & Password */}
@@ -162,20 +115,16 @@ const AddLecturer = () => {
             required
           >
             <option value="">--SELECT--</option>
-            <option value="fac_computing">Faculty of Computing</option>
-            <option value="fac_appliedsciences">Faculty of Applied Sciences</option>
-            <option value="fac_medicine">Faculty of Medicine</option>
-            <option value="fac_engineering">Faculty of Engineering</option>
-            <option value="fac_management">Faculty of Management</option>
-            <option value="fac_arts">Faculty of Arts</option>
-            <option value="fac_socialsciences">Faculty of Social Sciences</option>
-            <option value="fac_law">Faculty of Law</option>
-
+            {faculties.map((fac, idx) => (
+              <option key={idx} value={fac.value}>
+                {fac.name}
+              </option>
+            ))}
           </select>
         </div>
 
         {/* Department Select */}
-        {data.faculty && (
+        {departments.length > 0 && (
           <div>
             <label>Select Department</label>
             <select
@@ -187,8 +136,8 @@ const AddLecturer = () => {
             >
               <option value="">--SELECT DEPARTMENT--</option>
               {departments.map((dept, idx) => (
-                <option key={idx} value={dept}>
-                  {dept}
+                <option key={idx} value={dept.department}>
+                  {dept.department}
                 </option>
               ))}
             </select>

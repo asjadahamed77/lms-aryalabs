@@ -6,18 +6,18 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 export const loginUser = async (formData) => {
     try {
-        const response = await axios.post('/auth/login', formData);
+        const {data} = await axios.post('/auth/login', formData);
         
-        if (response.data.success) {
-            toast.success(response.data.message);
+        if (data.success) {
+            toast.success(data.message);
             
             // Store token and user data
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+            localStorage.setItem('token', data.token);        
+            localStorage.setItem('user', JSON.stringify(data.user));
             
-            return response.data.user;
+            return data;
         } else {
-            toast.error(response.data.message || "Login failed");
+            toast.error(data.message || "Login failed");
             return null;
         }
     } catch (error) {
