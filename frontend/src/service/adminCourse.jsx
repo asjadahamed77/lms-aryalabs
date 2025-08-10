@@ -57,10 +57,15 @@ export const assignLecturerToCourse = async ({courseId, lecturerId}) => {
             }
         })
 
+        if (data.success) {
+            toast.success("Lecturer assigned to course successfully");
+        }
+
         return data;
     } catch (error) {
         toast.error("Error assigning lecturer to course");
         console.error("Error assigning lecturer to course:", error);
+        throw error;
         
     }
 }

@@ -7,6 +7,7 @@ import adminLecturerRouter from './routes/adminLecturerRoutes.js';
 import authRouter from './routes/authRoutes.js';
 import adminStudentRouter from './routes/adminStudentRoutes.js';
 import adminCourseRouter from './routes/adminCourseRoutes.js';
+import { setupAssociations } from './models/associations.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -16,6 +17,8 @@ const allowedOrigins = ['http://localhost:5173'];
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: allowedOrigins, credentials: true }));
+
+setupAssociations();
 
 // DB Connection
 (async () => {

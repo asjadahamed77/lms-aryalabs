@@ -5,15 +5,14 @@ import { assignLecturerToCourse } from "../../../service/adminCourse";
 import toast from "react-hot-toast";
 
 const ViewCourses = () => {
-  const { loading, courses, faculties, lecturers, setLoading } = useContext(AppContext);
+  const { loading, courses, faculties, lecturers, setLoading } =
+    useContext(AppContext);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFaculty, setSelectedFaculty] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
-
-  console.log(courses);
-  
+  const [selectedLecturerId, setSelectedLecturerId] = useState(null);
 
   // Get departments for dropdown
   const departments = useMemo(() => {
@@ -46,31 +45,40 @@ const ViewCourses = () => {
 
   const handleAssignClick = (course) => {
     setSelectedCourse(course);
+    setSelectedLecturerId(null); // Reset selected lecturer when opening popup
     setShowPopup(true);
   };
 
-  const handleAssignLecturer = async() => {
+  const handleAssignLecturer = async () => {
+    if (!selectedLecturerId) {
+      toast.error("Please select a lecturer first");
+      return;
+    }
 
     try {
       setLoading(true);
-      const response = await assignLecturerToCourse({courseId: selectedCourse.id, lecturerId: selectedCourse.lecturerId});
-      if (response.success) {
-        toast.success("Lecturer assigned to course successfully");
-        // Optionally, you can refresh the courses or update the state here
+      const result = await assignLecturerToCourse({
+        courseId: selectedCourse.id,
+        lecturerId: selectedLecturerId
+      });
+      
+      if (result.success) {
+    
+        setShowPopup(false);
       }
     } catch (error) {
-      console.log("Error assigning lecturer to course:", error);
-      toast.error("Failed to assign lecturer to course");
-      
-    }finally
-    {
-      setShowPopup(false);
-      setSelectedCourse(null);
-      setLoading(false)
+      toast.error(error.response?.data?.message || "Failed to assign lecturer");
+      console.error("Assignment error:", error);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    
-  }
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setSelectedLecturerId(null);
+    setSelectedCourse(null);
+  };
 
   if (loading) {
     return <Loading />;
@@ -158,11 +166,9 @@ const ViewCourses = () => {
                     <td className="py-2 px-4 border-b">{course.courseCode}</td>
                     <td className="py-2 px-4 border-b">{course.faculty}</td>
                     <td className="py-2 px-4 border-b">{course.department}</td>
-                  
-<td className="py-2 px-4 border-b">{course.lecturerId}</td>
-
-
-
+                    <td className="py-2 px-4 border-b">
+                      { course.lecturer ? course.lecturer.name: "Not Assigned"}
+                    </td>
                     <td className="py-2 px-4 border-b">
                       <button
                         onClick={() => handleAssignClick(course)}
@@ -195,21 +201,25 @@ const ViewCourses = () => {
               <h2 className="text-xl font-semibold">
                 Assign Lecturer to {selectedCourse.courseName}
               </h2>
-              <p
-                onClick={() => setShowPopup(false)}
+              <button
+                onClick={handleClosePopup}
                 className="cursor-pointer font-bold text-lg"
               >
-                X
-              </p>
+                ×
+              </button>
             </div>
 
             <div className="flex flex-col w-full gap-2 mt-4">
               <label>Select Lecturer from {selectedCourse.faculty}</label>
-              <select className="p-2 border border-slate-200 rounded-md">
+              <select
+                className="p-2 border border-slate-200 rounded-md"
+                value={selectedLecturerId || ""}
+                onChange={(e) => setSelectedLecturerId(e.target.value)}
+              >
                 <option value="">--Select Lecturer--</option>
                 {getFacultyLecturers(selectedCourse.faculty).map(
-                  (lecturer, index) => (
-                    <option key={index} value={lecturer.name}>
+                  (lecturer) => (
+                    <option key={lecturer.id} value={lecturer.id}>
                       {lecturer.name} ({lecturer.department})
                     </option>
                   )
@@ -218,9 +228,12 @@ const ViewCourses = () => {
             </div>
             <button
               onClick={handleAssignLecturer}
-              className="mt-6 bg-primaryColor text-sm text-white w-full py-2 rounded hover:bg-primaryColor/80 duration-300 transition-all ease-linear cursor-pointer"
+              disabled={!selectedLecturerId || loading}
+              className={`mt-6 bg-primaryColor text-sm text-white w-full py-2 rounded hover:bg-primaryColor/80 duration-300 transition-all ease-linear cursor-pointer ${
+                !selectedLecturerId ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              Assign now
+              {loading ? "Assigning..." : "Assign Now"}
             </button>
           </div>
         </div>
