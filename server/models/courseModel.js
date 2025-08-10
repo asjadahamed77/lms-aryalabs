@@ -81,6 +81,14 @@ const Course = db.define('Course', {
   ]
 });
 
+Course.associate = (models) => {
+  Course.belongsTo(models.User, {
+    foreignKey: 'lecturerId',
+    as: 'lecturer'
+  });
+};
+
+
 
 
 export default Course;

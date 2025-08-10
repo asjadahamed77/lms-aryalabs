@@ -1,11 +1,10 @@
 import React, { useContext, useState, useMemo } from 'react';
 import { AppContext } from '../../../context/AppContext';
 import Loading from '../../common/Loading';
+const AssignLecturers = () => {
+    const { lecturers, loading, faculties } = useContext(AppContext);
 
-const ViewLecturers = () => {
-  const { lecturers, loading, faculties } = useContext(AppContext);
-
-  const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
   const [selectedFaculty, setSelectedFaculty] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
 
@@ -32,8 +31,8 @@ const ViewLecturers = () => {
   }
 
   return (
-    <div className="py-12">
-      <div className="flex flex-col gap-4 lg:flex-row mb-8">
+    <div className='py-12'>
+       <div className="flex flex-col gap-4 lg:flex-row mb-8">
         {/* Search */}
         <div className="flex-1">
           <label className="block text-sm font-medium text-primaryColor/70 mb-1">Search by Name</label>
@@ -83,41 +82,8 @@ const ViewLecturers = () => {
           </select>
         </div>
       </div>
-
-      {/* Lecturers Table */}
-      <div>
-        {filteredLecturers.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="py-2 px-4 border-b text-start">Name</th>
-                  <th className="py-2 px-4 border-b text-start">Email</th>
-                  <th className="py-2 px-4 border-b text-start">Faculty</th>
-                  <th className="py-2 px-4 border-b text-start">Department</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredLecturers.map((lecturer) => (
-                  <tr key={lecturer.id} className="hover:bg-gray-50">
-                    <td className="py-2 px-4 border-b">{lecturer.name}</td>
-                    <td className="py-2 px-4 border-b">{lecturer.email}</td>
-                    <td className="py-2 px-4 border-b">{lecturer.faculty}</td>
-                    <td className="py-2 px-4 border-b">{lecturer.department}</td>
-                  
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-gray-500">No lecturers found.</p>
-          </div>
-        )}
-      </div>
     </div>
-  );
-};
+  )
+}
 
-export default ViewLecturers;
+export default AssignLecturers

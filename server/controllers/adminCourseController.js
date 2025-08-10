@@ -1,4 +1,5 @@
 import Course from '../models/courseModel.js';
+import User from '../models/userModel.js';
 
 export const createCourse = async (req, res) => {
   const { courseName, courseCode, semester, faculty, department } = req.body;
@@ -40,14 +41,14 @@ export const createCourse = async (req, res) => {
 export const getAllCourses = async (req, res) => {
   try {
     const courses = await Course.findAll({
-      attributes: ['id', 'courseName', 'courseCode', 'semester', 'faculty', 'department']
+      attributes: ['id', 'courseName', 'courseCode', 'semester', 'faculty', 'department','lecturerId']
+      
     });
 
     return res.status(200).json({
       success: true,
       courses
     });
-
   } catch (error) {
     console.error('Error fetching courses:', error);
     return res.status(500).json({
@@ -57,3 +58,69 @@ export const getAllCourses = async (req, res) => {
     });
   }
 };
+
+export const assignLecturerToCourse = async (req, res) => {
+  const { courseId, lecturerId } = req.body;
+
+  try {
+    const course = await Course.findByPk(courseId, {
+      include: [{
+        model: User,
+        as: 'lecturer',
+        attributes: ['id', 'name'],
+        where: { role: 'lecturer' },
+        required: false
+      }]
+    });
+    
+    if (!course) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Course not found' 
+      });
+    }
+
+    // Verify the lecturer exists and is actually a lecturer
+    const lecturer = await User.findOne({
+      where: {
+        id: lecturerId,
+        role: 'lecturer'
+      }
+    });
+
+    if (!lecturer) {
+      return res.status(404).json({
+        success: false,
+        message: 'Lecturer not found or user is not a lecturer'
+      });
+    }
+
+    course.lecturerId = lecturerId;
+    await course.save();
+
+    // Refresh the course data to include the new lecturer
+    const updatedCourse = await Course.findByPk(courseId, {
+      include: [{
+        model: User,
+        as: 'lecturer',
+        attributes: ['id', 'name'],
+        where: { role: 'lecturer' },
+        required: false
+      }]
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Lecturer assigned to course successfully',
+      course: updatedCourse
+    });
+
+  } catch (error) {
+    console.error('Error assigning lecturer to course:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to assign lecturer to course',
+      error: error.message
+    });
+  }
+}
