@@ -87,6 +87,14 @@ const ViewLecturers = () => {
         </div>
       </div>
 
+      <div>
+        {filteredLecturers.length > 0 && (
+          <p className="text-sm  mb-4">
+            Showing {filteredLecturers.length} {filteredLecturers.length === 1 ? 'lecturer' : 'lecturers'}
+          </p>
+        )}
+      </div>
+
       {/* Lecturers Table */}
       <div>
         {filteredLecturers.length > 0 ? (
@@ -108,15 +116,19 @@ const ViewLecturers = () => {
                     <td className="py-2 px-4 border-b">{lecturer.email}</td>
                     <td className="py-2 px-4 border-b">{lecturer.faculty}</td>
                     <td className="py-2 px-4 border-b">{lecturer.department}</td>
+                   <td className='py-2 px-4 border-b'>
                    {
                     lecturer.courses.length>0 ?  lecturer.courses.map((lecturer,index)=>(
-                        <td key={index} className="py-2 px-4 border-b">
-                          {lecturer.name} - {lecturer.code}
-                        </td>
-                      )) : <td className='py-2 px-4 border-b'>
-                      No courses assigned
+                        <p key={index} className="">
+                          <p>{lecturer.name} - {lecturer.code}</p>
+                        </p>
+                      )) : <td className=''>
+                      <button className='text-center bg-red-500 text-white px-2 py-1 rounded-full text-sm'>
+                        Not Assigned
+                      </button>
                     </td>
                       } 
+                   </td>
                   
                   </tr>
                 ))}

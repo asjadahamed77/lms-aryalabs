@@ -142,6 +142,14 @@ const ViewStudents = () => {
             )}
           </div>
 
+          <div>
+        {filteredStudents.length > 0 && (
+          <p className="text-sm  mb-4">
+            Showing {filteredStudents.length} {filteredStudents.length === 1 ? 'student' : 'students'}
+          </p>
+        )}
+      </div>
+
           {/* Students table */}
           <div>
             {filteredStudents.length > 0 ? (
