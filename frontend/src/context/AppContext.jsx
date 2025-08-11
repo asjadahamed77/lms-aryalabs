@@ -143,6 +143,9 @@ const AppContextProvider = ({ children }) => {
     setLoading,
     courses,
     setCourses,
+    fetchCourses,
+    fetchLecturers,
+    fetchStudents
   };
 
   return (

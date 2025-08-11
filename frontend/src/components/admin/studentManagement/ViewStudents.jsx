@@ -76,7 +76,7 @@ const ViewStudents = () => {
                 setSelectedDepartment("");
                 setSelectedBatch("");
               }}
-              className="px-4 py-2 bg-primaryColor/70 text-white rounded-lg hover:bg-primaryColor/80 transition-colors"
+              className="px-4 py-2 cursor-pointer border border-transparent hover:border-primaryColor rounded-full  transition-colors"
             >
               ← Back to all faculties
             </button>

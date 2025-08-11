@@ -17,7 +17,7 @@ const AddCourse = () => {
 
   const [departments, setDepartments] = useState([]);
 
-  const {loading, setLoading, faculties} = useContext(AppContext)
+  const {loading, setLoading, faculties, fetchCourses} = useContext(AppContext)
 
 
   const handleChange = (e) => {
@@ -45,6 +45,8 @@ const AddCourse = () => {
     try {
       setLoading(true);
       await createCourse(data);
+
+      fetchCourses()
       // Reset form after submit
       setData({
         courseName: "",

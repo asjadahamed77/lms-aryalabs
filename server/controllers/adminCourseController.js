@@ -131,3 +131,53 @@ export const assignLecturerToCourse = async (req, res) => {
     });
   }
 }
+
+export const cancelAssignedLecturer = async (req, res) => {
+  const { courseId } = req.body;
+
+  try {
+    // Verify the course exists
+    const course = await Course.findByPk(courseId);
+    if (!course) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Course not found' 
+      });
+    }
+
+    // Check if the course already has no lecturer assigned
+    if (!course.lecturerId) {
+      return res.status(400).json({
+        success: false,
+        message: 'No lecturer is currently assigned to this course'
+      });
+    }
+
+    // Remove lecturer assignment by setting lecturerId to null
+    await course.update({ lecturerId: null });
+
+    // Get the updated course
+    const updatedCourse = await Course.findByPk(courseId, {
+      include: [{
+        model: User,
+        as: 'lecturer',
+        attributes: ['id', 'name'],
+        required: false
+      }]
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Lecturer assignment cancelled successfully',
+      course: updatedCourse
+    });
+
+  } catch (error) {
+    console.error('Error cancelling lecturer assignment:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to cancel lecturer assignment',
+      error: error.message
+    });
+  }
+}
