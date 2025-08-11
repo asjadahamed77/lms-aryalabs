@@ -144,6 +144,14 @@ const ViewCourses = () => {
         </div>
       </div>
 
+      <div>
+        {filteredCourses.length > 0 && (
+          <p className="text-sm  mb-4">
+            Showing {filteredCourses.length} {filteredCourses.length === 1 ? 'course' : 'courses'}
+          </p>
+        )}
+      </div>
+
       {/* Course Table */}
       <div>
         {filteredCourses.length > 0 ? (
@@ -166,16 +174,33 @@ const ViewCourses = () => {
                     <td className="py-2 px-4 border-b">{course.courseCode}</td>
                     <td className="py-2 px-4 border-b">{course.faculty}</td>
                     <td className="py-2 px-4 border-b">{course.department}</td>
+                    {
+                      course.lecturer ? (
+                        <td className="py-2 px-4 border-b">
+                        { course.lecturer ? course.lecturer.name: "Not Assigned"}
+                      </td>
+                      ) : <td className="py-2 px-4 border-b">
+<button className="text-center px-2 py-1 text-sm bg-red-500 text-white rounded-full">
+                        Not Assigned
+</button>
+                      </td>
+                    }
+                   
                     <td className="py-2 px-4 border-b">
-                      { course.lecturer ? course.lecturer.name: "Not Assigned"}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      <button
-                        onClick={() => handleAssignClick(course)}
-                        className="bg-primaryColor text-sm text-white px-2 py-1 rounded hover:bg-primaryColor/80 duration-300 transition-all ease-linear cursor-pointer"
-                      >
-                        Assign Lecturer
-                      </button>
+                      {
+                        course.lecturer ? (
+                         <button className="bg-red-500 text-sm text-white px-2 py-1 rounded hover:bg-red-300 duration-300 transition-all ease-linear cursor-pointer">
+                          Cancel
+                         </button>
+                        ) : (
+                          <button
+                          onClick={() => handleAssignClick(course)}
+                          className="bg-primaryColor text-sm text-white px-2 py-1 rounded hover:bg-primaryColor/80 duration-300 transition-all ease-linear cursor-pointer"
+                        >
+                          Assign Lecturer
+                        </button>
+                        )
+                      }
                     </td>
                   </tr>
                 ))}

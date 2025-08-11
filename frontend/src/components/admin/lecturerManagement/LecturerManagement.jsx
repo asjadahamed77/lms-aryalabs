@@ -2,7 +2,6 @@ import React from 'react'
 import { IoPersonAdd } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import { FaUserGroup } from "react-icons/fa6";
-import { MdAssignmentTurnedIn } from "react-icons/md";
 
 
 
@@ -23,12 +22,7 @@ const LecturerManagement = () => {
         </p>
         <h1 className="text-2xl">View Lecturers</h1>
       </div>
-      <div onClick={()=>{ navigate('/admin/lecturer-management/assign-lecturers'); window.scrollTo(0,0)}} className="flex items-center gap-4 p-4 md:p-8 bg-[#3B060A] text-white rounded-2xl cursor-pointer hover:-translate-y-2 duration-300 transform transition-all ease-linear">
-        <p>
-          <MdAssignmentTurnedIn className="text-6xl " />
-        </p>
-        <h1 className="text-2xl">Assign to Course</h1>
-      </div>
+      
     </div>
   )
 }
