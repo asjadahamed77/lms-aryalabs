@@ -8,6 +8,7 @@ import authRouter from './routes/authRoutes.js';
 import adminStudentRouter from './routes/adminStudentRoutes.js';
 import adminCourseRouter from './routes/adminCourseRoutes.js';
 import { setupAssociations } from './models/associations.js';
+import lecturerRouter from './routes/lecturerRoutes.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -36,6 +37,7 @@ app.use('/api/admin/lecturer', adminLecturerRouter);
 app.use('/api/admin/student', adminStudentRouter);
 app.use('/api/admin/course', adminCourseRouter);
 app.use('/api/auth',authRouter );
+app.use('/api/lecturer', lecturerRouter)
 
 
 app.get('/', (req, res) => {
