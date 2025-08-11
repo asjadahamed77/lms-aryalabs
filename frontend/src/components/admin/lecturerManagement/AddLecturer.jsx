@@ -4,7 +4,7 @@ import Loading from "../../common/Loading";
 import { AppContext } from "../../../context/AppContext";
 
 const AddLecturer = () => {
-  const { faculties } = useContext(AppContext);
+  const { faculties, fetchLecturers } = useContext(AppContext);
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -42,6 +42,7 @@ const AddLecturer = () => {
     try {
       setLoading(true);
       await createLecturer(data);
+      fetchLecturers()
       setData({
         name: "",
         email: "",

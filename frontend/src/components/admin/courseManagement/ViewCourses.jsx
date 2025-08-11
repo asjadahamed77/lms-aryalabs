@@ -5,7 +5,7 @@ import { assignLecturerToCourse, cancelLecturerAssignment } from "../../../servi
 import toast from "react-hot-toast";
 
 const ViewCourses = () => {
-  const { loading, courses, faculties, lecturers, setLoading } =
+  const { loading, courses, faculties, lecturers, setLoading, fetchCourses } =
     useContext(AppContext);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -66,6 +66,7 @@ const ViewCourses = () => {
     
         setShowPopup(false);
       }
+      fetchCourses()
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to assign lecturer");
       console.error("Assignment error:", error);
@@ -81,6 +82,7 @@ const ViewCourses = () => {
         toast.success(result.message);
         // Update your course list in state/context
       }
+      fetchCourses()
     } catch (error) {
       console.error("Cancellation error:", error);
     }

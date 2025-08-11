@@ -5,7 +5,7 @@ import Loading from "../../common/Loading";
 import toast from "react-hot-toast";
 
 const AddStudent = () => {
-  const { faculties, loading, setLoading } = useContext(AppContext);
+  const { faculties, loading, setLoading, fetchStudents } = useContext(AppContext);
 
   const [data, setData] = useState({
     name: "",
@@ -46,6 +46,7 @@ const AddStudent = () => {
 
       setLoading(true);
       await createStudent(data);
+      fetchStudents()
 
       // Reset form after submit
       setData({
