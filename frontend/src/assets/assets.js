@@ -272,41 +272,51 @@ export const batches = [
   {
     name: "2020/2021 Batch",
     value: "2020/2021 Batch",
+    id:'2020-2021'
   },
   {
     name: "2021/2022 Batch",
     value: "2021/2022 Batch",
+    id:'2021-2022'
   },
   {
     name: "2022/2023 Batch",
     value: "2022/2023 Batch",
+    id:'2022-2023'
   },
   {
     name: "2023/2024 Batch",
     value: "2023/2024 Batch",
+    id:'2023-2024'
   },
   {
     name: "2024/2025 Batch",
     value: "2024/2025 Batch",
+    id:'2024-2025'
   },
   {
     name: "2025/2026 Batch",
     value: "2025/2026 Batch",
+    id:'2025-2026'
   },
   {
     name: "2026/2027 Batch",
     value: "2026/2027 Batch",
+    id:'2026-2027'
   },
   {
     name: "2027/2028 Batch",
     value: "2027/2028 Batch",
+    id:'2027-2028'
   },
   {
     name: "2028/2029 Batch",
     value: "2028/2029 Batch",
+    id:'2028-2029'
   },
   {
     name: "2029/2030 Batch",
-    value: "2030/2031 Batch",
+    value: "2029/2030 Batch",
+    id:'2029-2030'
   },
 ]

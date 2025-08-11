@@ -23,11 +23,17 @@ import AddAnnouncement from "./components/admin/announcementManagement/AddAnnoun
 import ViewAnnouncement from "./components/admin/announcementManagement/ViewAnnouncement";
 import { Toaster } from "react-hot-toast";
 import { AppContext } from "./context/AppContext";
+import ManageProfile from "./components/common/ManageProfile";
+import BatchDetails from "./components/lecturer/BatchDetails";
+import AddAssignment from "./components/lecturer/assignmentManagement/AddAssignment";
+import ViewAssignments from "./components/lecturer/assignmentManagement/ViewAssignments";
+import AddQuiz from "./components/lecturer/quizManagement/AddQuiz";
+import ViewQuizzes from "./components/lecturer/quizManagement/ViewQuizzes";
+import AddResources from "./components/lecturer/resourceManagement/AddResources";
+import ViewResources from "./components/lecturer/resourceManagement/ViewResources";
 
 const App = () => {
   const { user } = useContext(AppContext);
-
-  
 
   return (
     <div>
@@ -36,9 +42,8 @@ const App = () => {
 
       <div className="mt-[60px] px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 ">
         <Routes>
-          {
-            !user && <Route path="login" element={<LoginPage />} />
-          }
+          {!user && <Route path="login" element={<LoginPage />} />}
+          <Route path="manage-profile" element={<ManageProfile />} />
           <Route path="/student" element={<StudentLayout />}>
             <Route index element={<StudentDashboard />} />
           </Route>
@@ -65,7 +70,7 @@ const App = () => {
               path="lecturer-management/view-lecturers"
               element={<ViewLecturers />}
             />
-          
+
             <Route path="payment-management" element={<PaymentManagement />} />
             <Route
               path="announcement-management"
@@ -91,6 +96,28 @@ const App = () => {
           </Route>
           <Route path="/lecturer" element={<LecturerLayout />}>
             <Route index element={<LecturerDashboard />} />
+            <Route path="batch-details/:id" element={<BatchDetails />} />
+            <Route
+              path="batch-details/:id/add-assignment"
+              element={<AddAssignment />}
+            />
+            <Route
+              path="batch-details/:id/view-assignment"
+              element={<ViewAssignments />}
+            />
+            <Route path="batch-details/:id/add-quiz" element={<AddQuiz />} />
+            <Route
+              path="batch-details/:id/view-quiz"
+              element={<ViewQuizzes />}
+            />
+            <Route
+              path="batch-details/:id/add-resource"
+              element={<AddResources />}
+            />
+            <Route
+              path="batch-details/:id/view-resource"
+              element={<ViewResources />}
+            />
           </Route>
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>

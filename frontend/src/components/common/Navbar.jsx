@@ -45,7 +45,7 @@ const Navbar = () => {
         </p>
         </div>
         <div className="p-2 w-[180px] text-primaryColor/70 absolute right-0 top-full hidden group-hover:block ">
-          <ul className="bg-white rounded-xl w-full">
+          <ul className="bg-white rounded-xl w-full border border-slate-200 shadow-2xl">
             <li className="  p-2 hover:text-primaryColor">
               <Link to={'/manage-profile'} className="inline-flex items-center gap-2"> <span>
                 <MdManageAccounts className="text-2xl" />
