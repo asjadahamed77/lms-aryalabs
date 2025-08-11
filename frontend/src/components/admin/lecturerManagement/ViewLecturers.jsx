@@ -5,6 +5,9 @@ import Loading from '../../common/Loading';
 const ViewLecturers = () => {
   const { lecturers, loading, faculties } = useContext(AppContext);
 
+  console.log(lecturers);
+  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFaculty, setSelectedFaculty] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
@@ -95,6 +98,7 @@ const ViewLecturers = () => {
                   <th className="py-2 px-4 border-b text-start">Email</th>
                   <th className="py-2 px-4 border-b text-start">Faculty</th>
                   <th className="py-2 px-4 border-b text-start">Department</th>
+                  <th className="py-2 px-4 border-b text-start">Course</th>
                 </tr>
               </thead>
               <tbody>
@@ -104,6 +108,15 @@ const ViewLecturers = () => {
                     <td className="py-2 px-4 border-b">{lecturer.email}</td>
                     <td className="py-2 px-4 border-b">{lecturer.faculty}</td>
                     <td className="py-2 px-4 border-b">{lecturer.department}</td>
+                   {
+                    lecturer.courses.length>0 ?  lecturer.courses.map((lecturer,index)=>(
+                        <td key={index} className="py-2 px-4 border-b">
+                          {lecturer.name} - {lecturer.code}
+                        </td>
+                      )) : <td className='py-2 px-4 border-b'>
+                      No courses assigned
+                    </td>
+                      } 
                   
                   </tr>
                 ))}

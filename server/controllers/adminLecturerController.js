@@ -1,3 +1,4 @@
+import Course from "../models/courseModel.js";
 import User from "../models/userModel.js";
 
 
@@ -34,13 +35,42 @@ export const createLecturer = async (req, res) => {
 
 export const getAllLecturers = async (req, res) => {
     try {
-     
-      const lecturers = await User.findAll({ where: { role: "lecturer" } });
+      const lecturers = await User.findAll({
+        where: { role: "lecturer" },
+        include: [{
+          model: Course,
+          as: 'courses',  
+          attributes: ['id', 'courseName', 'courseCode'], 
+          required: false 
+        }],
+        attributes: ['id', 'name', 'email', 'faculty', 'department'] 
+      });
   
-      return res.status(200).json({ success: true, lecturers });
+      // Transform the data to a more client-friendly format if needed
+      const formattedLecturers = lecturers.map(lecturer => ({
+        id: lecturer.id,
+        name: lecturer.name,
+        email: lecturer.email,
+        faculty: lecturer.faculty,
+        department: lecturer.department,
+        courses: lecturer.courses.map(course => ({
+          id: course.id,
+          name: course.courseName,
+          code: course.courseCode
+        }))
+      }));
+  
+      return res.status(200).json({ 
+        success: true, 
+        lecturers: formattedLecturers 
+      });
     } catch (error) {
-      console.log(`Error fetching lecturers: ${error.message}`);
-      return res.status(500).json({ success: false, message: error.message });
+      console.error(`Error fetching lecturers: ${error.message}`);
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Failed to fetch lecturers',
+        error: error.message 
+      });
     }
   };
 
