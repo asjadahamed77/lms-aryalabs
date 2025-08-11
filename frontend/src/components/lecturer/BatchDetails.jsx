@@ -8,6 +8,7 @@ const BatchDetails = () => {
 
     const {id} = useParams()
     const batch = batches.find(b => b.id === id)
+    
 
   return (
     <div>
