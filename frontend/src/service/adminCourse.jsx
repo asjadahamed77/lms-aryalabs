@@ -69,3 +69,17 @@ export const assignLecturerToCourse = async ({courseId, lecturerId}) => {
         
     }
 }
+export const cancelLecturerAssignment = async (courseId) => {
+    try {
+      const { data } = await axios.post('/admin/course/assign-cancel', { courseId }, {
+        headers: {
+          'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+        }
+      });
+      return data;
+    } catch (error) {
+      toast.error("Failed to cancel lecturer assignment");
+      throw error;
+    }
+  }

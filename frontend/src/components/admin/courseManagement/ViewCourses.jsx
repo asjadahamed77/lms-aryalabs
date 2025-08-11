@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState } from "react";
 import { AppContext } from "../../../context/AppContext";
 import Loading from "../../common/Loading";
-import { assignLecturerToCourse } from "../../../service/adminCourse";
+import { assignLecturerToCourse, cancelLecturerAssignment } from "../../../service/adminCourse";
 import toast from "react-hot-toast";
 
 const ViewCourses = () => {
@@ -71,6 +71,18 @@ const ViewCourses = () => {
       console.error("Assignment error:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCancelAssignment = async (courseId) => {
+    try {
+      const result = await cancelLecturerAssignment(courseId);
+      if (result.success) {
+        toast.success(result.message);
+        // Update your course list in state/context
+      }
+    } catch (error) {
+      console.error("Cancellation error:", error);
     }
   };
 
@@ -189,7 +201,7 @@ const ViewCourses = () => {
                     <td className="py-2 px-4 border-b">
                       {
                         course.lecturer ? (
-                         <button className="bg-red-500 text-sm text-white px-2 py-1 rounded hover:bg-red-300 duration-300 transition-all ease-linear cursor-pointer">
+                         <button onClick={()=>handleCancelAssignment(course.id)} className="bg-red-500 text-sm text-white px-2 py-1 rounded hover:bg-red-300 duration-300 transition-all ease-linear cursor-pointer">
                           Cancel
                          </button>
                         ) : (
