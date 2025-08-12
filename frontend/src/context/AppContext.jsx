@@ -4,6 +4,7 @@ import { getAllLecturers } from '../service/adminLecturer';
 import { getAllStudents } from '../service/adminStudent';
 import { getAllCourses } from '../service/adminCourse';
 import { useNavigate } from 'react-router-dom';
+import { getLecturerCourses } from '../service/lecturerService';
 
 export const AppContext = createContext();
 
@@ -16,6 +17,24 @@ const AppContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  const [lecturerCourses, setLecturerCourses] = useState([])
+
+  
+
+  const fetchLecturerCourses = async () => {
+    try {
+      const response = await getLecturerCourses();
+      setLecturerCourses(response.courses)
+     
+      
+      
+      
+    } catch (error) {
+      console.error("Error fetching lecturer courses:", error);
+      setLecturerCourses([]);
+      throw error; 
+    }
+  };
   // Initialize faculties
   useEffect(() => {
     setFaculties(facultiesOfUni);
@@ -99,33 +118,45 @@ const AppContextProvider = ({ children }) => {
     }
   };
 
-  // Fetch data only when admin is logged in
   useEffect(() => {
     if (user && user.role === "admin") {
-      const fetchAdminData = async () => {
+        const fetchAdminData = async () => {
+            try {
+                setLoading(true);
+                await Promise.all([
+                    fetchLecturers(),
+                    fetchStudents(),
+                    fetchCourses()
+                ]);
+            } catch (error) {
+                console.error("Error fetching admin data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchAdminData();
+    } else if (user && user.role === "lecturer") {
+      const fetchLecturerData = async () => {
         try {
           setLoading(true);
-          // Fetch all data in parallel
-          await Promise.all([
-            fetchLecturers(),
-            fetchStudents(),
-            fetchCourses()
-          ]);
+          await fetchLecturerCourses();
+          
         } catch (error) {
-          console.error("Error fetching admin data:", error);
+          console.error("Lecturer data fetch error:", error);
+           
         } finally {
           setLoading(false);
         }
       };
-
-      fetchAdminData();
-    } else {
-      // Clear data if not admin
-      setLecturers([]);
-      setStudents([]);
-      setCourses([]);
+      fetchLecturerData();
+    }else {
+        // Clear data if not admin/lecturer
+        setLecturers([]);
+        setStudents([]);
+        setCourses([]);
+        setLecturerCourses([]);
     }
-  }, [user]); // Run when user changes
+}, [user]);
 
   const value = {
     faculties,
@@ -145,7 +176,8 @@ const AppContextProvider = ({ children }) => {
     setCourses,
     fetchCourses,
     fetchLecturers,
-    fetchStudents
+    fetchStudents,
+    lecturerCourses, setLecturerCourses
   };
 
   return (
