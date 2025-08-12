@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { CgLoadbarDoc } from "react-icons/cg";
-import toast from "react-hot-toast";
-import axios from "axios";
+
 
 const AddAssignment = () => {
   const { lecturerCourses } = useContext(AppContext);
